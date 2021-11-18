@@ -3,6 +3,7 @@ $(document).ready(function(){
   refreshBooks();
   addClickHandlers();
   $('#bookShelf').on('click', '.delete-but', deleteBook);
+  $('#bookShelf').on('click', '.update-but', updateBook);
 });
 
 function addClickHandlers() {
@@ -59,6 +60,8 @@ function renderBooks(books) {
       <tr>
         <td>${book.title}</td>
         <td>${book.author}</td>
+        <td>${book.isRead}</td>
+        <td><button class="update-but" data-id="${book.id}" ">Read</button></td>
         <td><button class="delete-but" data-id="${book.id}">Delete</button></td>
       </tr>
     `);
@@ -74,8 +77,25 @@ function deleteBook(){
   }).then((res) => {
     console.log(res);
     refreshBooks();
+  }).catch((err) => {
+    console.log(err);
   })
   
 }; // end deleteBook
 
+
+function updateBook(){
+  const isTheBookRead = $(this).data('id');
+  $.ajax({
+    type: 'PUT',
+    url: `/books/${isTheBookRead}`
+  }).then((res) => {
+    console.log(res);
+    refreshBooks();
+  }).catch((err) => {
+    console.log(err);
+    
+  })
+  
+}; // end deleteBook
 
